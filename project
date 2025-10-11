@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# Go to tool directory.
+cd "${DKHFST_PATH/#\~/$HOME}"
+
+# Activate virtual environment.
+source ./env/bin/activate
+
+# Run CLI. 
+python3 -m cli.main $@ 
