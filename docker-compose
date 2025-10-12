@@ -1,0 +1,51 @@
+#!/bin/bash
+set -e
+
+# Load environment variables
+source .env
+
+# Target base directory
+BASE_DIR="./setup/$PROJECT_RUNTIME_MODE"
+
+# Load all docker-compose files into an array using mapfile
+mapfile -t COMPOSE_FILES < <(find "$BASE_DIR" -maxdepth 3 -type f \( -name 'docker-compose.yml' -o -name 'docker-compose.yaml' \) | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+
+# Check if we found any files
+if [ ${#COMPOSE_FILES[@]} -eq 0 ]; then
+    echo "No docker-compose files found in $BASE_DIR"
+    exit 1
+fi
+
+# Split CLI arguments on "--"
+args=()
+extra=()
+found_sep=false
+for arg in "$@"; do
+    if [ "$arg" = "--" ]; then
+        found_sep=true
+        continue
+    fi
+    if [ "$found_sep" = true ]; then
+        extra+=("$arg")
+    else
+        args+=("$arg")
+    fi
+done
+
+# Remove leading "./" and prepend full path
+for i in "${!COMPOSE_FILES[@]}"; do
+    clean_path="${COMPOSE_FILES[$i]#./}"
+    COMPOSE_FILES[$i]="$PWD/$clean_path"
+done
+
+# Build safe -f arguments
+DOCKER_FILES=()
+for file in "${COMPOSE_FILES[@]}"; do
+    DOCKER_FILES+=("-f" "$file")
+done
+
+# Run docker compose
+docker compose \
+    --env-file ".env" \
+    "${DOCKER_FILES[@]}" \
+    "${args[@]}" "${extra[@]}"

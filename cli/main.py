@@ -18,10 +18,13 @@ subparsers = parser.add_subparsers(
 # Load commands
 # -------------
 
-# --- Context for 'dkhfst'.
+# --- Context for 'template'.
 import cli.contexts.template.context as TemplateContext
 TemplateContext.create(subparsers)
 
+# --- Context for 'compose'.
+import cli.contexts.compose.context as ComposeContext
+ComposeContext.create(subparsers)
 
 # Run command.
 args = parser.parse_args()

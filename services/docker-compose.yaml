@@ -1,0 +1,31 @@
+name: dkhfst
+
+services: 
+  # -----------
+  # DNS Service
+  # -----------
+  dns: 
+    container_name: dkhfst-dns
+    build: 
+      context: ./dns 
+      dockerfile: Dockerfile 
+    restart: always 
+    volumes: 
+      - ../../../data/dns/:/etc/dnsmasq.d/
+      - ./dns/dnsmasq.conf:/etc/dnsmasq.conf
+    networks: 
+      net:  
+        ipv4_address: 172.20.0.2   
+
+# --------
+# NETWORKS 
+# --------
+networks: 
+  net: 
+    name: dkhfst-net
+    driver: bridge 
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.20.0.0/24  
+          gateway: 172.20.0.1

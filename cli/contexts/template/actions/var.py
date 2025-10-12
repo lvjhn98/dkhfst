@@ -2,7 +2,7 @@ import os
 
 def action(parser): 
     action = \
-        parser.add_parser('template:var', help='Greet someone')
+        parser.add_parser('template:var', help='Show a variable.')
     action.add_argument(
         'key', type=str, help='Variable to display.'
     )
