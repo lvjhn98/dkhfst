@@ -4,7 +4,10 @@ import argparse
 
 def action(parser): 
     action = \
-        parser.add_parser('template:dns-refresh', help='Refresh DNS configuration.')
+        parser.add_parser(
+            'template:dns-refresh', 
+            help='Refresh DNS configuration.'
+        )
     action.set_defaults(func=handle)
 
 def handle(args):

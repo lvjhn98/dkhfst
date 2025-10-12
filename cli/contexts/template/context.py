@@ -28,5 +28,8 @@ def create(parser):
     from .actions.dns_refresh import action
     action(parser)
     
+    from .actions.dns_connect import action
+    action(parser)
 
-
+    from .actions.mkca import action 
+    action(parser)

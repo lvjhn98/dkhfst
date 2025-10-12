@@ -4,7 +4,10 @@ import argparse
 
 def action(parser): 
     action = \
-        parser.add_parser('template:down', help='Stop template related services (DNS, networks, etc.).')
+        parser.add_parser(
+            'template:down', 
+            help='Stop template related services (DNS, networks, etc.)'
+        )
     action.set_defaults(func=handle)
 
 def handle(args):
