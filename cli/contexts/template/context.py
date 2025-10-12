@@ -31,5 +31,9 @@ def create(parser):
     from .actions.dns_connect import action
     action(parser)
 
-    from .actions.mkca import action 
+    from .actions.get_ca import action
     action(parser)
+
+    from .actions.dns_update import action
+    action(parser)
+
